@@ -103,7 +103,7 @@ playBtn.addEventListener("click", () => {
   playBtn.style.display = "none";
 });
 
-// Generate floating hearts
+// Floating hearts (front layer)
 const heartsContainer = document.querySelector(".hearts-container");
 function createHeart() {
   const heart = document.createElement("div");
@@ -113,8 +113,29 @@ function createHeart() {
   heartsContainer.appendChild(heart);
   heart.textContent = "❤️";
 
-  setTimeout(() => {
-    heart.remove();
-  }, 8000);
+  setTimeout(() => heart.remove(), 8000);
 }
 setInterval(createHeart, 500);
+
+// Background hearts (behind panels)
+function createBackgroundHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("bg-heart");
+  heart.style.left = Math.random() * 100 + "%";
+  heart.style.fontSize = 24 + Math.random() * 24 + "px";
+  heart.style.opacity = 0.2 + Math.random() * 0.3; // soft background
+  heartsContainer.appendChild(heart);
+  heart.textContent = "❤️";
+
+  heart.animate([
+    { transform: `translateY(0px)`, opacity: heart.style.opacity },
+    { transform: `translateY(-800px)`, opacity: 0 }
+  ], {
+    duration: 15000 + Math.random() * 10000,
+    iterations: 1,
+    easing: 'linear'
+  });
+
+  setTimeout(() => heart.remove(), 15000 + Math.random() * 10000);
+}
+setInterval(createBackgroundHeart, 1000);
