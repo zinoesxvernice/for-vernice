@@ -81,24 +81,14 @@ function startMessageCounter(){
   setTimeout(()=>{ animateClockNumber(64725, "msg-number", "k+"); }, 300);
 }
 
-// Click FOR VERNICE → panel2
+// Click FOR VERNICE → panel2 + play music immediately
 document.getElementById("forVernice").addEventListener("click", ()=>{
   showPanel(1);
+  music.play().catch(()=>{ playBtn.style.display = "inline-block"; });
 });
 
-// Anywhere click to play music (once)
-let musicStarted = false;
-document.addEventListener("click", ()=>{
-  if(!musicStarted){
-    music.play().catch(()=>{});
-    playBtn.style.display = "none"; // hide fallback if visible
-    musicStarted = true;
-  }
-});
-
-// Fallback play button (optional)
+// Fallback play button
 playBtn.addEventListener("click", ()=>{
   music.play();
   playBtn.style.display = "none";
-  musicStarted = true;
 });
