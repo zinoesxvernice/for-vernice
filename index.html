@@ -3,16 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Vernice</title>
+<title>For Vernice 💖</title>
 <link rel="stylesheet" href="style.css">
+<!-- Optional cute font -->
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- Panels -->
+<!-- Panel 1: For Vernice -->
 <div id="panel1" class="panel">
   <h1 id="forVernice">FOR VERNICE 💖</h1>
 </div>
 
+<!-- Panel 2: Days since met -->
 <div id="panel2" class="panel hidden">
   <div class="counter-wrap">
     <div id="number"></div>
@@ -21,6 +24,7 @@
   <div class="subtext">and our love keeps growing 💌</div>
 </div>
 
+<!-- Panel 3: Messages shared -->
 <div id="panel3" class="panel hidden">
   <div class="counter-wrap">
     <div id="msg-number"></div>
@@ -29,15 +33,24 @@
   <div class="subtext">let’s reach 100k together soon 😘</div>
 </div>
 
+<!-- Panel 4: Love timeline -->
+<div id="panel4" class="panel hidden">
+  <h2 class="timeline-title">💖 Our Love Timeline 💖</h2>
+  <div class="timeline-container">
+    <div class="timeline-line"></div>
+    <!-- JS will generate branches, points, and labels -->
+  </div>
+</div>
+
 <!-- Floating hearts container -->
 <div class="hearts-container"></div>
 
-<!-- Navigation Arrows -->
+<!-- Navigation arrows -->
 <div class="arrow arrow-left" onclick="prevPanel()">&lt;</div>
 <div class="arrow arrow-right" onclick="nextPanel()">&gt;</div>
 
 <!-- Credit -->
-<div class="credit">made by zino</div>
+<div class="credit">made by Zino</div>
 
 <!-- Background music -->
 <audio id="music" loop>
@@ -45,8 +58,25 @@
 </audio>
 
 <!-- Optional fallback play button -->
-<button id="play-music" style="display:none;position:fixed;bottom:60px;right:16px;padding:8px 12px;font-size:14px;">▶ Play Music</button>
+<button id="play-music" style="
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 10px 16px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    background: #ff3b3b;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+    z-index: 9999;
+">
+  ▶ Play Music
+</button>
 
+<!-- JS -->
 <script src="script.js"></script>
 </body>
 </html>
