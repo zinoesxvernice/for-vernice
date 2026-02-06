@@ -154,9 +154,9 @@ font-size:.8rem;
 <div id="panel3" class="panel hidden">
 <div class="counter-wrap">
 <div class="msg-number"></div>
-<div>messages across tiktok and discord combined</div>
+<div>msgs across discord and tiktok</div>
 </div>
-<div class="subtext">over 64,725k+</div>
+<div class="subtext">lets push for 100k soon :D</div>
 </div>
 
 <!-- Navigation Arrows -->
@@ -195,13 +195,8 @@ navRight.classList.remove("visible");
 }
 }
 
-function nextPanel(){
-if(current<panels.length-1)showPanel(current+1);
-}
-
-function prevPanel(){
-if(current>0)showPanel(current-1);
-}
+function nextPanel(){if(current<panels.length-1)showPanel(current+1);}
+function prevPanel(){if(current>0)showPanel(current-1);}
 
 function daysSinceDate(){
 const start=new Date("2024-12-30");
@@ -209,10 +204,11 @@ const today=new Date();
 return Math.floor((today-start)/(1000*60*60*24));
 }
 
-// clock ticking animation
-function animateClockNumber(finalNumber, containerId){
+// clock ticking animation for digits
+function animateClockNumber(finalNumber, containerId, suffix=""){
 const container=document.getElementById(containerId);
 container.innerHTML="";
+
 [...finalNumber.toString()].forEach((num,i)=>{
 const span=document.createElement("span");
 span.className="digit";
@@ -230,6 +226,16 @@ clearInterval(interval);
 span.textContent=num;
 },800+(i*400));
 });
+
+// append suffix after all digits
+if(suffix){
+const suffixSpan=document.createElement("span");
+suffixSpan.textContent=suffix;
+suffixSpan.style.marginLeft="4px";
+suffixSpan.style.color="#ff3b3b";
+suffixSpan.style.fontWeight="800";
+container.appendChild(suffixSpan);
+}
 }
 
 function startCountdown(){
@@ -239,7 +245,7 @@ setTimeout(()=>{animateClockNumber(daysSinceDate(),"number");},300);
 
 function startMessageCounter(){
 messageCountStarted=true;
-setTimeout(()=>{animateClockNumber("64725","msg-number");},300);
+setTimeout(()=>{animateClockNumber("64725","msg-number","k+");},300);
 }
 
 // click "FOR VERNICE" to go to days counter
