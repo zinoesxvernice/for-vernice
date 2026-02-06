@@ -20,28 +20,31 @@ const playBtn = document.getElementById("play-music");
 
 // -------------------- SHOW PANEL --------------------
 function showPanel(i) {
+  if(i < 0 || i >= panels.length) return;
+
   panels[current].classList.add("hidden");
   current = i;
   panels[current].classList.remove("hidden");
 
-  // Navigation arrow visibility
-  if (current >= 1) {
-    navLeft.classList.add("visible");
-    navRight.classList.add("visible");
-  } else {
-    navLeft.classList.remove("visible");
-    navRight.classList.remove("visible");
-  }
+  // Show/hide navigation arrows
+  if(current > 0) navLeft.classList.add("visible");
+  else navLeft.classList.remove("visible");
 
-  // Start counters or timeline if panel reached
-  if (current === 1 && !countdownStarted) startCountdown();
-  if (current === 2 && !messageCountStarted) startMessageCounter();
-  if (current === 3) startTimeline(); // panel4 = timeline
+  if(current < panels.length - 1) navRight.classList.add("visible");
+  else navRight.classList.remove("visible");
+
+  // Trigger counters or timeline if panel reached
+  if(current === 1 && !countdownStarted) startCountdown();
+  if(current === 2 && !messageCountStarted) startMessageCounter();
+  if(current === 3) startTimeline(); // Panel 4 = timeline
 }
 
 // -------------------- NAVIGATION --------------------
-function nextPanel() { if(current < panels.length - 1) showPanel(current + 1); }
-function prevPanel() { if(current > 0) showPanel(current - 1); }
+function nextPanel() { showPanel(current + 1); }
+function prevPanel() { showPanel(current - 1); }
+
+navRight.addEventListener("click", nextPanel);
+navLeft.addEventListener("click", prevPanel);
 
 // -------------------- DAYS COUNTER --------------------
 function daysSinceDate() {
@@ -54,7 +57,7 @@ function animateClockNumber(finalNumber, containerId, suffix="") {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
 
-  [...finalNumber.toString()].forEach((num,i) => {
+  [...finalNumber.toString()].forEach((num, i) => {
     const span = document.createElement("span");
     span.className = "digit";
     span.textContent = "0";
@@ -72,7 +75,7 @@ function animateClockNumber(finalNumber, containerId, suffix="") {
     }, 800 + i * 400);
   });
 
-  if(suffix){
+  if(suffix) {
     setTimeout(() => {
       const suffixSpan = document.createElement("span");
       suffixSpan.textContent = suffix;
@@ -84,14 +87,14 @@ function animateClockNumber(finalNumber, containerId, suffix="") {
   }
 }
 
-function startCountdown(){
+function startCountdown() {
   countdownStarted = true;
-  setTimeout(() => { animateClockNumber(daysSinceDate(), "number"); }, 300);
+  setTimeout(() => animateClockNumber(daysSinceDate(), "number"), 300);
 }
 
-function startMessageCounter(){
+function startMessageCounter() {
   messageCountStarted = true;
-  setTimeout(() => { animateClockNumber(64725, "msg-number", "k+"); }, 300);
+  setTimeout(() => animateClockNumber(64725, "msg-number", "k+"), 300);
 }
 
 // -------------------- CLICK FOR VERNICE --------------------
@@ -135,10 +138,9 @@ function startTimeline() {
 
   if (!line) return;
 
-  // Reset in case user navigates back and forth
+  // Reset line and branches
   line.style.width = "0";
-  container.querySelectorAll(".timeline-branch, .timeline-point, .timeline-label")
-           .forEach(el => el.remove());
+  container.querySelectorAll(".timeline-branch, .timeline-point, .timeline-label").forEach(el => el.remove());
 
   // Animate main line
   setTimeout(() => { line.style.width = "100%"; }, 300);
@@ -154,7 +156,7 @@ function startTimeline() {
       branch.style.left = percent + "%";
       branch.style.top = "50%";
       container.appendChild(branch);
-      setTimeout(() => { branch.style.height = "50px"; }, i * 300);
+      setTimeout(() => branch.style.height = "50px", i * 300);
 
       // Point
       const point = document.createElement("div");
@@ -180,10 +182,3 @@ function startTimeline() {
     });
   }, 2000);
 }
-
-// -------------------- ARROW NAVIGATION --------------------
-navRight.addEventListener("click", () => {
-  if(current === 2) showPanel(3); // panel4
-  else nextPanel();
-});
-
