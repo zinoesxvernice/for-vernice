@@ -27,31 +27,31 @@ body {
   background-size: 50px 50px;
 }
 
-/* Soft blurred background circles */
-body::before,
+/* Vignette overlay */
 body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.35) 100%);
+  z-index: 1;
+}
+
+/* Soft blurred background circles */
+body::before {
   content: "";
   position: absolute;
   border-radius: 50%;
   filter: blur(150px);
   opacity: 0.2;
-  z-index: 0;
-}
-
-body::before {
   width: 600px;
   height: 600px;
   background: #ff6b81;
   top: -100px;
   left: -150px;
-}
-
-body::after {
-  width: 500px;
-  height: 500px;
-  background: #ff9ac1;
-  bottom: -120px;
-  right: -100px;
+  z-index: 0;
 }
 
 /* Panel floating animation */
@@ -140,7 +140,7 @@ h1:hover {
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 3;
+  z-index: 4;
   opacity: 0;
   pointer-events: none;
 }
@@ -163,14 +163,14 @@ h1:hover {
   color: #ff1a75;
 }
 
-/* Floating hearts */
+/* Floating hearts (foreground) */
 .hearts-container {
   position: absolute;
   width: 100%;
   height: 100%;
   pointer-events: none;
   overflow: hidden;
-  z-index: 1;
+  z-index: 3;
 }
 
 .heart {
