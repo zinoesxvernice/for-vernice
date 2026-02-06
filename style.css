@@ -1,0 +1,135 @@
+/* General reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #151515;
+  color: white;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><text y="24" font-size="24">🪿</text></svg>') 16 16, auto;
+  padding: 20px;
+}
+
+/* Gray blur background */
+body::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: #888;
+  opacity: .12;
+  filter: blur(180px);
+  border-radius: 50%;
+}
+
+/* Floating animation */
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.panel {
+  position: absolute;
+  animation: float 6s ease-in-out infinite;
+  transition: 0.5s ease;
+  width: 100%;
+  max-width: 900px;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(.95);
+}
+
+h1 {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.counter-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#number, .msg-number {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 800;
+  color: #ff3b3b;
+  display: flex;
+}
+
+.digit {
+  display: inline-block;
+  width: .7em;
+}
+
+.subtext {
+  margin-top: 15px;
+  opacity: .6;
+  font-size: 1rem;
+}
+
+/* Navigation arrows */
+.arrow {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.5s ease, opacity 0.5s ease;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none; /* initially not clickable */
+}
+
+.arrow.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.arrow-left { left: 15px; }
+.arrow-right { right: 15px; }
+
+.arrow:hover {
+  transform: scale(1.1);
+  background: rgba(255,255,255,0.12);
+}
+
+/* Credit */
+.credit {
+  position: fixed;
+  bottom: 12px;
+  right: 16px;
+  opacity: .5;
+  font-size: .8rem;
+}
+
+@media(max-width:600px){
+  .arrow { width: 42px; height: 42px; font-size: 18px; }
+}
