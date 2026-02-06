@@ -61,6 +61,7 @@ h1{
 font-size:clamp(2rem,6vw,3.5rem);
 font-weight:800;
 letter-spacing:2px;
+cursor:pointer;
 }
 
 .counter-wrap{
@@ -92,14 +93,17 @@ font-size:1rem;
 /* arrows */
 .nav{
 position:fixed;
-right:15px;
 top:50%;
 transform:translateY(-50%);
 display:flex;
 flex-direction:column;
 gap:12px;
 z-index:10;
+opacity:0;
+transition:.5s;
 }
+
+.nav.visible{opacity:1;}
 
 .arrow{
 background:rgba(255,255,255,0.05);
@@ -121,6 +125,10 @@ transform:scale(1.1);
 background:rgba(255,255,255,0.12);
 }
 
+/* left/right */
+.arrow-left{position:fixed;left:15px;}
+.arrow-right{position:fixed;right:15px;}
+
 /* credit */
 .credit{
 position:fixed;
@@ -138,8 +146,9 @@ font-size:.8rem;
 
 <body>
 
+<!-- Panels -->
 <div id="panel1" class="panel">
-<h1>FOR VERNICE 💝</h1>
+<h1 id="forVernice">FOR VERNICE 💝</h1>
 </div>
 
 <div id="panel2" class="panel hidden">
@@ -150,31 +159,42 @@ font-size:.8rem;
 <div class="subtext">and still counting (hopefully)</div>
 </div>
 
-<div class="nav">
-<div class="arrow" onclick="nextPanel()">></div>
-<div class="arrow" onclick="prevPanel()"><</div>
-</div>
+<!-- Navigation Arrows -->
+<div class="arrow arrow-left" onclick="prevPanel()">&lt;</div>
+<div class="arrow arrow-right" onclick="nextPanel()">&gt;</div>
 
+<!-- Credit -->
 <div class="credit">made by zino</div>
 
 <script>
 const panels=[document.getElementById("panel1"),document.getElementById("panel2")];
 let current=0;
+const navLeft=document.querySelector(".arrow-left");
+const navRight=document.querySelector(".arrow-right");
+let countdownStarted=false;
+
+// hide arrows initially
+navLeft.style.opacity="0";
+navRight.style.opacity="0";
 
 function showPanel(i){
 panels[current].classList.add("hidden");
 current=i;
 panels[current].classList.remove("hidden");
-if(current===1){startCountdown();}
+
+// show arrows only if panel2 is visible
+if(current===1){
+navLeft.classList.add("visible");
+navRight.classList.add("visible");
+if(!countdownStarted){startCountdown();}
+}else{
+navLeft.classList.remove("visible");
+navRight.classList.remove("visible");
+}
 }
 
-function nextPanel(){
-if(current<panels.length-1)showPanel(current+1);
-}
-
-function prevPanel(){
-if(current>0)showPanel(current-1);
-}
+function nextPanel(){if(current<panels.length-1)showPanel(current+1);}
+function prevPanel(){if(current>0)showPanel(current-1);}
 
 function daysSinceDate(){
 const start=new Date("2024-12-30");
@@ -182,6 +202,7 @@ const today=new Date();
 return Math.floor((today-start)/(1000*60*60*24));
 }
 
+// clock ticking animation
 function animateClockNumber(finalNumber){
 const container=document.getElementById("number");
 container.innerHTML="";
@@ -191,10 +212,10 @@ span.className="digit";
 span.textContent="0";
 container.appendChild(span);
 
-let current=0;
+let currentDigit=0;
 let interval=setInterval(()=>{
-span.textContent=current;
-current=(current+1)%10;
+span.textContent=currentDigit;
+currentDigit=(currentDigit+1)%10;
 },50);
 
 setTimeout(()=>{
@@ -205,12 +226,14 @@ span.textContent=num;
 }
 
 function startCountdown(){
-if(window.countStarted)return;
-window.countStarted=true;
-setTimeout(()=>{
-animateClockNumber(daysSinceDate());
-},300);
+countdownStarted=true;
+setTimeout(()=>{animateClockNumber(daysSinceDate());},300);
 }
+
+// click "FOR VERNICE" to go to countdown
+document.getElementById("forVernice").addEventListener("click",()=>{
+showPanel(1);
+});
 </script>
 
 </body>
