@@ -116,11 +116,11 @@ function startMessageCounter() {
 
 // -------------------- LOVE TIMELINE --------------------
 const timelineEvents = [
-  { date: "Dec 30, 2024", label: "First met" },
-  { date: "Jan 15, 2025", label: "First message" },
-  { date: "Feb 14, 2025", label: "First Valentine’s" },
-  { date: "Mar 01, 2025", label: "First date" },
-  { date: "Apr 10, 2025", label: "Special memory" }
+  { date: "12/22/24", label: "we met here :3" },
+  { date: "12/30/24", label: "started dating ^_^" },
+  { date: "02/14/25", label: "first valentines" },
+  { date: "6/6/25", label: "contact again" },
+  { date: "2/14/26", label: "present" }
 ];
 
 function startTimeline() {
