@@ -92,3 +92,19 @@ playBtn.addEventListener("click", ()=>{
   music.play();
   playBtn.style.display = "none";
 });
+
+// Generate floating hearts
+const heartsContainer = document.querySelector(".hearts-container");
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.style.left = Math.random() * 100 + "%";
+  heart.style.fontSize = 12 + Math.random() * 16 + "px";
+  heartsContainer.appendChild(heart);
+  heart.textContent = "❤️";
+
+  setTimeout(() => {
+    heart.remove();
+  }, 8000); // remove after animation
+}
+setInterval(createHeart, 500);
