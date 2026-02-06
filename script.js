@@ -1,40 +1,85 @@
-function startMessageCounter(){
-    if(messageCountStarted) return;
-    messageCountStarted = true;
+const panels = [document.getElementById("panel1"), document.getElementById("panel2"), document.getElementById("panel3")];
+let current = 0;
+const navLeft = document.querySelector(".arrow-left");
+const navRight = document.querySelector(".arrow-right");
+let countdownStarted = false;
+let messageCountStarted = false;
 
-    const finalNumber = 64725; // number only
-    const containerId = "msg-number";
-    const suffix = "k+";
+// Show panel function
+function showPanel(i){
+  panels[current].classList.add("hidden");
+  current = i;
+  panels[current].classList.remove("hidden");
 
-    const container = document.getElementById(containerId);
-    container.innerHTML = "";
-
-    // Animate each digit
-    [...finalNumber.toString()].forEach((num,i)=>{
-        const span = document.createElement("span");
-        span.className = "digit";
-        span.textContent = "0";
-        container.appendChild(span);
-
-        let currentDigit = 0;
-        const interval = setInterval(()=>{
-            span.textContent = currentDigit;
-            currentDigit = (currentDigit + 1) % 10;
-        }, 50);
-
-        setTimeout(()=>{
-            clearInterval(interval);
-            span.textContent = num;
-        }, 800 + i * 400);
-    });
-
-    // Add the k+ suffix after all digits animate
-    setTimeout(()=>{
-        const suffixSpan = document.createElement("span");
-        suffixSpan.textContent = suffix;
-        suffixSpan.style.marginLeft = "4px";
-        suffixSpan.style.color = "#ff3b3b";
-        suffixSpan.style.fontWeight = "800";
-        container.appendChild(suffixSpan);
-    }, 800 + finalNumber.toString().length * 400);
+  if(current >= 1){
+    navLeft.classList.add("visible");
+    navRight.classList.add("visible");
+    if(current===1 && !countdownStarted) startCountdown();
+    if(current===2 && !messageCountStarted) startMessageCounter();
+  } else {
+    navLeft.classList.remove("visible");
+    navRight.classList.remove("visible");
+  }
 }
+
+// Navigation
+function nextPanel(){ if(current < panels.length - 1) showPanel(current + 1); }
+function prevPanel(){ if(current > 0) showPanel(current - 1); }
+
+// Days since Dec 30, 2024
+function daysSinceDate(){
+  const start = new Date("2024-12-30");
+  const today = new Date();
+  return Math.floor((today - start) / (1000*60*60*24));
+}
+
+// Clock-ticking number animation
+function animateClockNumber(finalNumber, containerId, suffix=""){
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+
+  [...finalNumber.toString()].forEach((num,i)=>{
+    const span = document.createElement("span");
+    span.className = "digit";
+    span.textContent = "0";
+    container.appendChild(span);
+
+    let currentDigit = 0;
+    const interval = setInterval(()=>{
+      span.textContent = currentDigit;
+      currentDigit = (currentDigit + 1) % 10;
+    }, 50);
+
+    setTimeout(()=>{
+      clearInterval(interval);
+      span.textContent = num;
+    }, 800 + i * 400);
+  });
+
+  if(suffix){
+    setTimeout(()=>{
+      const suffixSpan = document.createElement("span");
+      suffixSpan.textContent = suffix;
+      suffixSpan.style.marginLeft = "4px";
+      suffixSpan.style.color = "#ff3b3b";
+      suffixSpan.style.fontWeight = "800";
+      container.appendChild(suffixSpan);
+    }, 800 + finalNumber.toString().length * 400);
+  }
+}
+
+// Start counters
+function startCountdown(){
+  countdownStarted = true;
+  setTimeout(()=>{ animateClockNumber(daysSinceDate(), "number"); }, 300);
+}
+
+function startMessageCounter(){
+  messageCountStarted = true;
+  setTimeout(()=>{ animateClockNumber(64725, "msg-number", "k+"); }, 300);
+}
+
+// Click FOR VERNICE → panel2
+document.getElementById("forVernice").addEventListener("click", ()=>{
+  showPanel(1);
+});
