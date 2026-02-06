@@ -6,7 +6,7 @@ let current = 0;
 const navLeft = document.querySelector(".arrow-left");
 const navRight = document.querySelector(".arrow-right");
 
-// State to prevent double triggers
+// Keep track of which panels have run their animations
 const visited = Array(panels.length).fill(false);
 
 // -------------------- MUSIC --------------------
@@ -17,16 +17,17 @@ const playBtn = document.getElementById("play-music");
 function showPanel(index) {
   if (index < 0 || index >= panels.length) return;
 
-  panels.forEach((panel, i) => panel.classList.toggle("hidden", i !== index));
   current = index;
+  panels.forEach((panel, i) => panel.classList.toggle("hidden", i !== index));
 
-  // Arrows visibility
+  // Update arrows
   navLeft.classList.toggle("visible", current > 0);
   navRight.classList.toggle("visible", current < panels.length - 1);
 
-  // Trigger one-time panel actions
+  // Run panel-specific animations only once
   if (!visited[current]) {
     visited[current] = true;
+
     if (current === 1) startCountdown();
     if (current === 2) startMessageCounter();
     if (current === 3) startTimeline();
@@ -40,10 +41,12 @@ function prevPanel() { showPanel(current - 1); }
 navLeft.addEventListener("click", prevPanel);
 navRight.addEventListener("click", nextPanel);
 
-// -------------------- CLICK FOR VERNICE --------------------
+// -------------------- FOR VERNICE CLICK --------------------
 document.getElementById("forVernice").addEventListener("click", () => {
+  current = 0;            // Reset to first panel
+  showPanel(current);      // Show first panel
+  nextPanel();             // Then go to Days panel
   music.play().catch(() => { playBtn.style.display = "inline-block"; });
-  nextPanel(); // Go to Days panel sequentially
 });
 
 // Fallback play button
@@ -65,7 +68,7 @@ function createHeart() {
 }
 setInterval(createHeart, 500);
 
-// -------------------- DAYS COUNTER --------------------
+// -------------------- COUNTERS --------------------
 function daysSinceDate() {
   const start = new Date("2024-12-30");
   const today = new Date();
@@ -116,26 +119,26 @@ function startMessageCounter() {
 
 // -------------------- LOVE TIMELINE --------------------
 const timelineEvents = [
-  { date: "12/22/24", label: "first met" },
-  { date: "12/30/24", label: "got together yay" },
-  { date: "02/14/25", label: "our first valentines" },
-  { date: "06/06/25", label: "got back in contact" },
-  { date: "02/14/26", label: "forever love you vernice" }
+  { date: "Dec 30, 2024", label: "First met" },
+  { date: "Jan 15, 2025", label: "First message" },
+  { date: "Feb 14, 2025", label: "First Valentine’s" },
+  { date: "Mar 01, 2025", label: "First date" },
+  { date: "Apr 10, 2025", label: "Special memory" }
 ];
 
 function startTimeline() {
   const container = document.querySelector("#panel4 .timeline-container");
-  const line = container.querySelector(".timeline-line");
-  if (!line) return;
+  if (!container) return;
 
-  // Reset timeline
+  // Clear previous timeline
+  container.innerHTML = `<div class="timeline-line"></div>`;
+  const line = container.querySelector(".timeline-line");
   line.style.width = "0";
-  container.querySelectorAll(".timeline-branch, .timeline-point, .timeline-label").forEach(el => el.remove());
 
   // Animate main line
   setTimeout(() => line.style.width = "100%", 300);
 
-  // Animate branches & labels alternately
+  // Add branches and labels
   setTimeout(() => {
     timelineEvents.forEach((event, i) => {
       const percent = (i / (timelineEvents.length - 1)) * 100;
@@ -158,7 +161,7 @@ function startTimeline() {
         point.style.transform = "translate(-50%, -150%)";
       }, i * 400 + 800);
 
-      // Label (alternating top/bottom)
+      // Label alternating top/bottom
       const label = document.createElement("div");
       label.className = "timeline-label";
       label.style.left = percent + "%";
