@@ -81,10 +81,15 @@ function startMessageCounter(){
   setTimeout(()=>{ animateClockNumber(64725, "msg-number", "k+"); }, 300);
 }
 
-// Click FOR VERNICE → panel2 + play music immediately
-document.getElementById("forVernice").addEventListener("click", ()=>{
+// ✅ FIXED: play music FIRST (only change made)
+document.getElementById("forVernice").addEventListener("click", async ()=>{
+  try {
+    music.currentTime = 0;
+    await music.play();
+  } catch(e) {
+    playBtn.style.display = "inline-block";
+  }
   showPanel(1);
-  music.play().catch(()=>{ playBtn.style.display = "inline-block"; });
 });
 
 // Fallback play button
@@ -105,6 +110,6 @@ function createHeart() {
 
   setTimeout(() => {
     heart.remove();
-  }, 8000); // remove after animation
+  }, 8000);
 }
 setInterval(createHeart, 500);
