@@ -188,7 +188,7 @@ h1 {
   transition: all 0.3s ease;
 }
 
-/* Hover glow effect for every span inside text */
+/* Glow & hover effect */
 .panel span, .counter-wrap span {
   display: inline-block;
   transition: all 0.3s ease;
@@ -199,6 +199,19 @@ h1 {
   text-shadow: 0 0 8px #ff6b81, 0 0 12px #ff3b3b, 0 0 16px #ff1a75;
   transform: translateY(-6px) scale(1.1);
   cursor: default;
+}
+
+/* Bubbly animation */
+@keyframes bubbly {
+  0% { transform: translateY(0) scale(1) rotate(0deg); opacity:1; }
+  25% { transform: translateY(-10px) scale(1.2) rotate(-5deg); }
+  50% { transform: translateY(-15px) scale(1.1) rotate(5deg); }
+  75% { transform: translateY(-10px) scale(1.15) rotate(-3deg); }
+  100% { transform: translateY(0) scale(1) rotate(0deg); opacity:1; }
+}
+
+.bubbly {
+  animation: bubbly 0.8s ease forwards;
 }
 
 @media(max-width:600px){
