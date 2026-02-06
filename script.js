@@ -6,10 +6,8 @@ let current = 0;
 const navLeft = document.querySelector(".arrow-left");
 const navRight = document.querySelector(".arrow-right");
 
-// -------------------- STATE --------------------
-let hasVisitedPanel2 = false; // Days since panel
-let hasVisitedPanel3 = false; // Messages panel
-let hasVisitedPanel4 = false; // Timeline panel
+// State to prevent double triggers
+const visited = Array(panels.length).fill(false);
 
 // -------------------- MUSIC --------------------
 const music = document.getElementById("music");
@@ -19,18 +17,20 @@ const playBtn = document.getElementById("play-music");
 function showPanel(index) {
   if (index < 0 || index >= panels.length) return;
 
-  // Hide all panels except current
   panels.forEach((panel, i) => panel.classList.toggle("hidden", i !== index));
   current = index;
 
-  // Update navigation arrows
+  // Arrows visibility
   navLeft.classList.toggle("visible", current > 0);
   navRight.classList.toggle("visible", current < panels.length - 1);
 
-  // Trigger counters or timeline only once
-  if (current === 1 && !hasVisitedPanel2) { startCountdown(); hasVisitedPanel2 = true; }
-  if (current === 2 && !hasVisitedPanel3) { startMessageCounter(); hasVisitedPanel3 = true; }
-  if (current === 3 && !hasVisitedPanel4) { startTimeline(); hasVisitedPanel4 = true; }
+  // Trigger one-time panel actions
+  if (!visited[current]) {
+    visited[current] = true;
+    if (current === 1) startCountdown();
+    if (current === 2) startMessageCounter();
+    if (current === 3) startTimeline();
+  }
 }
 
 // -------------------- NAVIGATION --------------------
@@ -42,8 +42,8 @@ navRight.addEventListener("click", nextPanel);
 
 // -------------------- CLICK FOR VERNICE --------------------
 document.getElementById("forVernice").addEventListener("click", () => {
-  showPanel(1); // Go to Days panel
   music.play().catch(() => { playBtn.style.display = "inline-block"; });
+  nextPanel(); // Go to Days panel sequentially
 });
 
 // Fallback play button
@@ -116,11 +116,11 @@ function startMessageCounter() {
 
 // -------------------- LOVE TIMELINE --------------------
 const timelineEvents = [
-  { date: "12/22/24", label: "we met here :3" },
-  { date: "12/30/24", label: "started dating ^_^" },
-  { date: "02/14/25", label: "first valentines" },
-  { date: "6/6/25", label: "contact again" },
-  { date: "2/14/26", label: "present" }
+  { date: "12/22/24", label: "first met" },
+  { date: "12/30/24", label: "got together yay" },
+  { date: "02/14/25", label: "our first valentines" },
+  { date: "06/06/25", label: "got back in contact" },
+  { date: "02/14/26", label: "forever love you vernice" }
 ];
 
 function startTimeline() {
@@ -135,7 +135,7 @@ function startTimeline() {
   // Animate main line
   setTimeout(() => line.style.width = "100%", 300);
 
-  // Animate branches & labels
+  // Animate branches & labels alternately
   setTimeout(() => {
     timelineEvents.forEach((event, i) => {
       const percent = (i / (timelineEvents.length - 1)) * 100;
@@ -158,13 +158,16 @@ function startTimeline() {
         point.style.transform = "translate(-50%, -150%)";
       }, i * 400 + 800);
 
-      // Label
+      // Label (alternating top/bottom)
       const label = document.createElement("div");
       label.className = "timeline-label";
       label.style.left = percent + "%";
-      label.style.top = "calc(50% - 60px)";
+      label.style.top = (i % 2 === 0) ? "calc(50% - 60px)" : "calc(50% + 20px)";
       label.textContent = `${event.date} – ${event.label}`;
+      label.style.opacity = "0";
+      label.style.transition = "all 0.5s ease";
       container.appendChild(label);
+
       setTimeout(() => {
         label.style.opacity = "1";
         label.style.transform = "translateY(0)";
