@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Vernice</title>
 
-<!-- Modern Font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
@@ -21,72 +20,49 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    background:#0a0a0a;
     overflow:hidden;
+    position:relative;
 }
 
-/* Background blur circles */
+/* Modern blurred glow background */
 body::before,
 body::after{
     content:"";
     position:absolute;
-    width:400px;
-    height:400px;
+    width:500px;
+    height:500px;
     border-radius:50%;
-    filter:blur(120px);
-    z-index:0;
+    filter:blur(160px);
+    opacity:0.35;
 }
 
 body::before{
-    background:#ff6ec7;
-    top:-100px;
-    left:-100px;
+    background:#ff4da6;
+    top:-150px;
+    left:-150px;
 }
 
 body::after{
-    background:#6ea8ff;
-    bottom:-100px;
-    right:-100px;
+    background:#4d79ff;
+    bottom:-150px;
+    right:-150px;
 }
 
-/* Glass card */
-.container{
+h1{
     position:relative;
     z-index:1;
-    padding:60px 80px;
-    border-radius:25px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,0.15);
-    box-shadow:0 20px 60px rgba(0,0,0,0.35);
-    text-align:center;
-}
-
-/* Title */
-h1{
-    font-size:3rem;
+    font-size:3.5rem;
     font-weight:800;
-    letter-spacing:1px;
+    letter-spacing:2px;
     color:white;
-}
-
-/* Subtitle */
-p{
-    margin-top:15px;
-    font-size:1.1rem;
-    font-weight:300;
-    color:rgba(255,255,255,0.75);
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1>FOR VERNICE 💝</h1>
-    <p>A modern, sleek homepage built with love.</p>
-</div>
+<h1>FOR VERNICE 💝</h1>
 
 </body>
 </html>
