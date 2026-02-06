@@ -16,19 +16,6 @@ let messageCountStarted = false;
 const music = document.getElementById("music");
 const playBtn = document.getElementById("play-music");
 
-// Wrap every character in spans for hover & bubbly effects
-function wrapTextInSpans(selector) {
-  document.querySelectorAll(selector).forEach(el => {
-    el.innerHTML = el.textContent
-      .split('')
-      .map(c => c === ' ' ? ' ' : `<span>${c}</span>`)
-      .join('');
-  });
-}
-
-// Apply to headers, subtexts, counters
-wrapTextInSpans('.panel h1, .panel .subtext, .counter-wrap div');
-
 // Show panel function
 function showPanel(i) {
   panels[current].classList.add("hidden");
@@ -104,25 +91,10 @@ function startMessageCounter() {
   setTimeout(() => { animateClockNumber(64725, "msg-number", "k+"); }, 300);
 }
 
-// Bubbly animation trigger
-function triggerBubblyAnimation(selector) {
-  const letters = document.querySelectorAll(selector);
-  letters.forEach((span, i) => {
-    setTimeout(() => {
-      span.classList.add("bubbly");
-    }, i * 50);
-
-    span.addEventListener("animationend", () => {
-      span.classList.remove("bubbly");
-    }, { once: true });
-  });
-}
-
-// Click FOR VERNICE → show panel2 + play music + bubbly text
+// Click FOR VERNICE → show panel2 + play music
 document.getElementById("forVernice").addEventListener("click", () => {
   showPanel(1);
   music.play().catch(() => { playBtn.style.display = "inline-block"; });
-  triggerBubblyAnimation("#forVernice span");
 });
 
 // Fallback play button
