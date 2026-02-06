@@ -1,4 +1,8 @@
-const panels = [document.getElementById("panel1"), document.getElementById("panel2"), document.getElementById("panel3")];
+const panels = [
+  document.getElementById("panel1"),
+  document.getElementById("panel2"),
+  document.getElementById("panel3")
+];
 let current = 0;
 const navLeft = document.querySelector(".arrow-left");
 const navRight = document.querySelector(".arrow-right");
@@ -81,19 +85,18 @@ function startMessageCounter(){
   setTimeout(()=>{ animateClockNumber(64725, "msg-number", "k+"); }, 300);
 }
 
-// ✅ Fixed music handler — works with GitHub Pages autoplay rules
+// Click FOR VERNICE → panel2 + play music immediately
 document.getElementById("forVernice").addEventListener("click", ()=>{
-  // Temporary mute hack to satisfy browser autoplay restrictions
-  music.muted = true;
+  showPanel(1);
+
+  // Autoplay-safe play
+  music.muted = true;        // start muted to satisfy autoplay policy
   music.currentTime = 0;
   music.play().then(()=>{
-    music.muted = false; // unmute after starting
+    music.muted = false;     // unmute once playback starts
   }).catch(()=>{
-    playBtn.style.display = "inline-block";
+    playBtn.style.display = "inline-block"; // fallback button if blocked
   });
-
-  // show panel immediately
-  showPanel(1);
 });
 
 // Fallback play button
@@ -104,16 +107,4 @@ playBtn.addEventListener("click", ()=>{
 
 // Generate floating hearts
 const heartsContainer = document.querySelector(".hearts-container");
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.style.left = Math.random() * 100 + "%";
-  heart.style.fontSize = 12 + Math.random() * 16 + "px";
-  heartsContainer.appendChild(heart);
-  heart.textContent = "❤️";
-
-  setTimeout(() => {
-    heart.remove();
-  }, 8000);
-}
-setInterval(createHeart, 500);
+function
