@@ -1,12 +1,15 @@
-/* Reset & font */
+/* Import cutesy Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap');
+
+/* Reset & base */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
 }
 
 body {
+  font-family: 'Baloo 2', cursive;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -17,11 +20,11 @@ body {
   padding: 20px;
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><text y="24" font-size="24">❤️</text></svg>') 16 16, auto;
 
-  /* Gradient + repeating heart pattern */
+  /* Gradient + subtle heart pattern */
   background: linear-gradient(135deg, #ffb6c1, #ff9ac1, #ffc0cb),
               url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='24' font-size='24'%3E%26%2310000%3B%3C/text%3E%3C/svg%3E");
   background-repeat: repeat;
-  background-size: 50px 50px; /* spacing of hearts */
+  background-size: 50px 50px;
 }
 
 /* Soft blurred background circles */
@@ -52,7 +55,7 @@ body::after {
 }
 
 /* Panel floating animation */
-@keyframes floatHeartPanel {
+@keyframes floatPanel {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-15px); }
   100% { transform: translateY(0px); }
@@ -60,7 +63,7 @@ body::after {
 
 .panel {
   position: absolute;
-  animation: floatHeartPanel 6s ease-in-out infinite;
+  animation: floatPanel 6s ease-in-out infinite;
   transition: 0.5s ease;
   width: 100%;
   max-width: 900px;
@@ -73,26 +76,36 @@ body::after {
   transform: scale(.95);
 }
 
+/* Main heading */
 h1 {
+  font-family: 'Baloo 2', cursive;
   font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 800;
-  letter-spacing: 2px;
-  cursor: pointer;
+  font-weight: 700;
   color: #ff1a75;
   text-shadow: 0 0 12px #ff6b81;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
+h1:hover {
+  transform: scale(1.1);
+  text-shadow: 0 0 20px #ff6b81, 0 0 30px #ff1a75;
+}
+
+/* Counters */
 .counter-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+  font-family: 'Baloo 2', cursive;
 }
 
 #number, #msg-number {
   font-size: clamp(3rem, 8vw, 5rem);
-  font-weight: 800;
+  font-weight: 700;
   color: #ff1a75;
   display: flex;
 }
@@ -102,6 +115,7 @@ h1 {
   width: .7em;
 }
 
+/* Subtext */
 .subtext {
   margin-top: 15px;
   opacity: .9;
@@ -109,7 +123,7 @@ h1 {
   color: #fff0f5;
 }
 
-/* Arrows */
+/* Navigation arrows */
 .arrow {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
@@ -135,7 +149,7 @@ h1 {
 .arrow-left { left: 15px; }
 .arrow-right { right: 15px; }
 .arrow:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
   background: rgba(255, 255, 255, 0.25);
 }
 
@@ -149,7 +163,7 @@ h1 {
   color: #ff1a75;
 }
 
-/* Floating hearts (foreground) */
+/* Floating hearts */
 .hearts-container {
   position: absolute;
   width: 100%;
@@ -174,13 +188,21 @@ h1 {
   100% { transform: translateY(-600px) rotate(360deg); opacity:0; }
 }
 
-/* Background hearts layer */
-.bg-heart {
-  position: absolute;
-  pointer-events: none;
-  z-index: 0; /* behind panels */
-  user-select: none;
-  will-change: transform, opacity;
+/* Optional music play button */
+#play-music {
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background: #ff3b3b;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 9999;
 }
 
 /* Responsive arrows */
