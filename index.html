@@ -4,159 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Vernice</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-
-body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#151515;
-color:white;
-overflow:hidden;
-text-align:center;
-position:relative;
-cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><text y="24" font-size="24">🪿</text></svg>') 16 16, auto;
-padding:20px;
-}
-
-/* gray blur bg */
-body::before{
-content:"";
-position:absolute;
-width:600px;
-height:600px;
-background:#888;
-opacity:.12;
-filter:blur(180px);
-border-radius:50%;
-}
-
-/* floating */
-@keyframes float{
-0%{transform:translateY(0)}
-50%{transform:translateY(-10px)}
-100%{transform:translateY(0)}
-}
-
-.panel{
-position:absolute;
-animation:float 6s ease-in-out infinite;
-transition:.5s ease;
-width:100%;
-max-width:900px;
-}
-
-.hidden{
-opacity:0;
-pointer-events:none;
-transform:scale(.95);
-}
-
-h1{
-font-size:clamp(2rem,6vw,3.5rem);
-font-weight:800;
-letter-spacing:2px;
-cursor:pointer;
-}
-
-.counter-wrap{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:10px;
-flex-wrap:wrap;
-}
-
-#number, .msg-number{
-font-size:clamp(3rem,8vw,5rem);
-font-weight:800;
-color:#ff3b3b;
-display:flex;
-}
-
-.digit{
-display:inline-block;
-width:.7em;
-}
-
-.subtext{
-margin-top:15px;
-opacity:.6;
-font-size:1rem;
-}
-
-/* arrows */
-.arrow{
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(10px);
-border:1px solid rgba(255,255,255,0.1);
-width:48px;
-height:48px;
-border-radius:14px;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:22px;
-cursor:pointer;
-transition:.2s;
-position:fixed;
-top:50%;
-transform:translateY(-50%);
-z-index:10;
-opacity:0;
-}
-
-.arrow.visible{opacity:1;}
-
-.arrow-left{left:15px;}
-.arrow-right{right:15px;}
-
-.arrow:hover{
-transform:scale(1.1);
-background:rgba(255,255,255,0.12);
-}
-
-/* credit */
-.credit{
-position:fixed;
-bottom:12px;
-right:16px;
-opacity:.5;
-font-size:.8rem;
-}
-
-@media(max-width:600px){
-.arrow{width:42px;height:42px;font-size:18px;}
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <!-- Panels -->
 <div id="panel1" class="panel">
-<h1 id="forVernice">FOR VERNICE 💝</h1>
+  <h1 id="forVernice">FOR VERNICE 💝</h1>
 </div>
 
 <div id="panel2" class="panel hidden">
-<div class="counter-wrap">
-<div id="number"></div>
-<div>since December 30, 2024</div>
-</div>
-<div class="subtext">and still counting (hopefully)</div>
+  <div class="counter-wrap">
+    <div id="number"></div>
+    <div>since December 30, 2024</div>
+  </div>
+  <div class="subtext">and still counting (hopefully)</div>
 </div>
 
 <div id="panel3" class="panel hidden">
-<div class="counter-wrap">
-<div class="msg-number"></div>
-<div>msgs across discord and tiktok</div>
-</div>
-<div class="subtext">lets push for 100k soon :D</div>
+  <div class="counter-wrap">
+    <div class="msg-number"></div>
+    <div>msgs across discord and tiktok</div>
+  </div>
+  <div class="subtext">lets push for 100k soon :D</div>
 </div>
 
 <!-- Navigation Arrows -->
@@ -167,90 +37,92 @@ font-size:.8rem;
 <div class="credit">made by zino</div>
 
 <script>
-const panels=[document.getElementById("panel1"),document.getElementById("panel2"),document.getElementById("panel3")];
-let current=0;
-const navLeft=document.querySelector(".arrow-left");
-const navRight=document.querySelector(".arrow-right");
-let countdownStarted=false;
-let messageCountStarted=false;
+const panels = [document.getElementById("panel1"), document.getElementById("panel2"), document.getElementById("panel3")];
+let current = 0;
+const navLeft = document.querySelector(".arrow-left");
+const navRight = document.querySelector(".arrow-right");
+let countdownStarted = false;
+let messageCountStarted = false;
 
-// initially hide arrows
-navLeft.style.opacity="0";
-navRight.style.opacity="0";
-
+// Show panel function
 function showPanel(i){
-panels[current].classList.add("hidden");
-current=i;
-panels[current].classList.remove("hidden");
+  panels[current].classList.add("hidden");
+  current = i;
+  panels[current].classList.remove("hidden");
 
-// show arrows only if panel2 or panel3 is visible
-if(current>=1){
-navLeft.classList.add("visible");
-navRight.classList.add("visible");
-if(current===1 && !countdownStarted){startCountdown();}
-if(current===2 && !messageCountStarted){startMessageCounter();}
-}else{
-navLeft.classList.remove("visible");
-navRight.classList.remove("visible");
+  if(current >= 1){
+    navLeft.classList.add("visible");
+    navRight.classList.add("visible");
+    if(current===1 && !countdownStarted) startCountdown();
+    if(current===2 && !messageCountStarted) startMessageCounter();
+  } else {
+    navLeft.classList.remove("visible");
+    navRight.classList.remove("visible");
+  }
 }
+
+// Navigation
+function nextPanel(){
+  if(current < panels.length - 1) showPanel(current + 1);
+}
+function prevPanel(){
+  if(current > 0) showPanel(current - 1);
 }
 
-function nextPanel(){if(current<panels.length-1)showPanel(current+1);}
-function prevPanel(){if(current>0)showPanel(current-1);}
-
+// Calculate days since Dec 30, 2024
 function daysSinceDate(){
-const start=new Date("2024-12-30");
-const today=new Date();
-return Math.floor((today-start)/(1000*60*60*24));
+  const start = new Date("2024-12-30");
+  const today = new Date();
+  return Math.floor((today - start) / (1000*60*60*24));
 }
 
-// clock ticking animation for digits
+// Clock-ticking number animation
 function animateClockNumber(finalNumber, containerId, suffix=""){
-const container=document.getElementById(containerId);
-container.innerHTML="";
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
 
-[...finalNumber.toString()].forEach((num,i)=>{
-const span=document.createElement("span");
-span.className="digit";
-span.textContent="0";
-container.appendChild(span);
+  [...finalNumber.toString()].forEach((num, i)=>{
+    const span = document.createElement("span");
+    span.className = "digit";
+    span.textContent = "0";
+    container.appendChild(span);
 
-let currentDigit=0;
-let interval=setInterval(()=>{
-span.textContent=currentDigit;
-currentDigit=(currentDigit+1)%10;
-},50);
+    let currentDigit = 0;
+    let interval = setInterval(()=>{
+      span.textContent = currentDigit;
+      currentDigit = (currentDigit + 1) % 10;
+    }, 50);
 
-setTimeout(()=>{
-clearInterval(interval);
-span.textContent=num;
-},800+(i*400));
-});
+    setTimeout(()=>{
+      clearInterval(interval);
+      span.textContent = num;
+    }, 800 + (i*400));
+  });
 
-// append suffix after all digits
-if(suffix){
-const suffixSpan=document.createElement("span");
-suffixSpan.textContent=suffix;
-suffixSpan.style.marginLeft="4px";
-suffixSpan.style.color="#ff3b3b";
-suffixSpan.style.fontWeight="800";
-container.appendChild(suffixSpan);
+  if(suffix){
+    const suffixSpan = document.createElement("span");
+    suffixSpan.textContent = suffix;
+    suffixSpan.style.marginLeft = "4px";
+    suffixSpan.style.color = "#ff3b3b";
+    suffixSpan.style.fontWeight = "800";
+    container.appendChild(suffixSpan);
+  }
 }
-}
 
+// Start counters
 function startCountdown(){
-countdownStarted=true;
-setTimeout(()=>{animateClockNumber(daysSinceDate(),"number");},300);
+  countdownStarted = true;
+  setTimeout(()=>{ animateClockNumber(daysSinceDate(), "number"); }, 300);
 }
 
 function startMessageCounter(){
-messageCountStarted=true;
-setTimeout(()=>{animateClockNumber("64725","msg-number","k+");},300);
+  messageCountStarted = true;
+  setTimeout(()=>{ animateClockNumber("64725", "msg-number", "k+"); }, 300);
 }
 
-// click "FOR VERNICE" to go to days counter
-document.getElementById("forVernice").addEventListener("click",()=>{
-showPanel(1);
+// Initial click to go to panel2
+document.getElementById("forVernice").addEventListener("click", ()=>{
+  showPanel(1);
 });
 </script>
 
