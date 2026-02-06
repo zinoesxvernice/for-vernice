@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -16,7 +16,7 @@ body {
   overflow: hidden;
   text-align: center;
   position: relative;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><text y="24" font-size="24">&#x2764;&#xFE0F;</text></svg>') 16 16, auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><text y="24" font-size="24">❤️</text></svg>') 16 16, auto;
   padding: 20px;
 }
 
@@ -73,11 +73,11 @@ h1 {
   font-size: clamp(2rem, 6vw, 3.5rem);
   font-weight: 800;
   letter-spacing: 2px;
+  cursor: pointer;
   color: #ff1a75;
   text-shadow: 0 0 12px #ff6b81;
 }
 
-/* Counter */
 .counter-wrap {
   display: flex;
   justify-content: center;
@@ -145,7 +145,7 @@ h1 {
   color: #ff1a75;
 }
 
-/* Floating hearts */
+/* Floating hearts (foreground) */
 .hearts-container {
   position: absolute;
   width: 100%;
@@ -170,50 +170,16 @@ h1 {
   100% { transform: translateY(-600px) rotate(360deg); opacity:0; }
 }
 
-/* Fallback button */
-#play-music {
-  display: none;
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  padding: 10px 16px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  background: #ff3b3b;
-  color: white;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  cursor: pointer;
-  z-index: 9999;
-  transition: all 0.3s ease;
+/* Background hearts */
+.bg-heart {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0; /* behind panels */
+  user-select: none;
+  will-change: transform, opacity;
 }
 
-/* Glow & hover effect */
-.panel span, .counter-wrap span {
-  display: inline-block;
-  transition: all 0.3s ease;
-}
-
-.panel span:hover, .counter-wrap span:hover {
-  color: #ff1a75;
-  text-shadow: 0 0 8px #ff6b81, 0 0 12px #ff3b3b, 0 0 16px #ff1a75;
-  transform: translateY(-6px) scale(1.1);
-  cursor: default;
-}
-
-/* Bubbly animation */
-@keyframes bubbly {
-  0% { transform: translateY(0) scale(1) rotate(0deg); opacity:1; }
-  25% { transform: translateY(-10px) scale(1.2) rotate(-5deg); }
-  50% { transform: translateY(-15px) scale(1.1) rotate(5deg); }
-  75% { transform: translateY(-10px) scale(1.15) rotate(-3deg); }
-  100% { transform: translateY(0) scale(1) rotate(0deg); opacity:1; }
-}
-
-.bubbly {
-  animation: bubbly 0.8s ease forwards;
-}
-
+/* Responsive arrows */
 @media(max-width:600px){
   .arrow { width: 42px; height: 42px; font-size: 18px; }
 }
