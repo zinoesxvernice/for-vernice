@@ -1,61 +1,61 @@
-// -------------------- PANELS --------------------
 const panels = Array.from(document.querySelectorAll(".panel"));
 let current = 0;
 
-// Arrows
 const navLeft = document.querySelector(".arrow-left");
 const navRight = document.querySelector(".arrow-right");
 
-// Keep track of which panels have run their animations
-const visited = Array(panels.length).fill(false);
-
-// -------------------- MUSIC --------------------
 const music = document.getElementById("music");
 const playBtn = document.getElementById("play-music");
 
-// -------------------- SHOW PANEL --------------------
+// Flags for one-time animations
+let countdownStarted = false;
+let messageCountStarted = false;
+let timelineStarted = false;
+
+// ---------------- SHOW PANEL ----------------
 function showPanel(index) {
   if (index < 0 || index >= panels.length) return;
 
   current = index;
   panels.forEach((panel, i) => panel.classList.toggle("hidden", i !== index));
 
-  // Update arrows
   navLeft.classList.toggle("visible", current > 0);
   navRight.classList.toggle("visible", current < panels.length - 1);
 
-  // Run panel-specific animations only once
-  if (!visited[current]) {
-    visited[current] = true;
-
-    if (current === 1) startCountdown();
-    if (current === 2) startMessageCounter();
-    if (current === 3) startTimeline();
+  // Run animations only once per panel
+  if (current === 1 && !countdownStarted) {
+    countdownStarted = true;
+    startCountdown();
+  }
+  if (current === 2 && !messageCountStarted) {
+    messageCountStarted = true;
+    startMessageCounter();
+  }
+  if (current === 3 && !timelineStarted) {
+    timelineStarted = true;
+    startTimeline();
   }
 }
 
-// -------------------- NAVIGATION --------------------
+// ---------------- NAVIGATION ----------------
 function nextPanel() { showPanel(current + 1); }
 function prevPanel() { showPanel(current - 1); }
 
 navLeft.addEventListener("click", prevPanel);
 navRight.addEventListener("click", nextPanel);
 
-// -------------------- FOR VERNICE CLICK --------------------
+// ---------------- FOR VERNICE ----------------
 document.getElementById("forVernice").addEventListener("click", () => {
-  current = 0;            // Reset to first panel
-  showPanel(current);      // Show first panel
-  nextPanel();             // Then go to Days panel
+  showPanel(1); // Always go to Days panel, do NOT auto-advance
   music.play().catch(() => { playBtn.style.display = "inline-block"; });
 });
 
-// Fallback play button
 playBtn.addEventListener("click", () => {
   music.play();
   playBtn.style.display = "none";
 });
 
-// -------------------- FLOATING HEARTS --------------------
+// ---------------- FLOATING HEARTS ----------------
 const heartsContainer = document.querySelector(".hearts-container");
 function createHeart() {
   const heart = document.createElement("div");
@@ -68,7 +68,7 @@ function createHeart() {
 }
 setInterval(createHeart, 500);
 
-// -------------------- COUNTERS --------------------
+// ---------------- COUNTERS ----------------
 function daysSinceDate() {
   const start = new Date("2024-12-30");
   const today = new Date();
@@ -117,7 +117,7 @@ function startMessageCounter() {
   setTimeout(() => animateClockNumber(64725, "msg-number", "k+"), 300);
 }
 
-// -------------------- LOVE TIMELINE --------------------
+// ---------------- TIMELINE ----------------
 const timelineEvents = [
   { date: "Dec 30, 2024", label: "First met" },
   { date: "Jan 15, 2025", label: "First message" },
@@ -130,15 +130,12 @@ function startTimeline() {
   const container = document.querySelector("#panel4 .timeline-container");
   if (!container) return;
 
-  // Clear previous timeline
   container.innerHTML = `<div class="timeline-line"></div>`;
   const line = container.querySelector(".timeline-line");
   line.style.width = "0";
 
-  // Animate main line
   setTimeout(() => line.style.width = "100%", 300);
 
-  // Add branches and labels
   setTimeout(() => {
     timelineEvents.forEach((event, i) => {
       const percent = (i / (timelineEvents.length - 1)) * 100;
@@ -161,7 +158,7 @@ function startTimeline() {
         point.style.transform = "translate(-50%, -150%)";
       }, i * 400 + 800);
 
-      // Label alternating top/bottom
+      // Label top/bottom
       const label = document.createElement("div");
       label.className = "timeline-label";
       label.style.left = percent + "%";
