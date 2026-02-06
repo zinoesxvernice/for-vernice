@@ -1,4 +1,6 @@
+// ==============================
 // Panels
+// ==============================
 const panels = [
   document.getElementById("panel1"),
   document.getElementById("panel2"),
@@ -16,7 +18,9 @@ let messageCountStarted = false;
 const music = document.getElementById("music");
 const playBtn = document.getElementById("play-music");
 
+// ==============================
 // Show panel function
+// ==============================
 function showPanel(i) {
   panels[current].classList.add("hidden");
   current = i;
@@ -34,18 +38,28 @@ function showPanel(i) {
   }
 }
 
+// ==============================
 // Navigation
-function nextPanel() { if (current < panels.length - 1) showPanel(current + 1); }
-function prevPanel() { if (current > 0) showPanel(current - 1); }
+// ==============================
+function nextPanel() { 
+  if (current < panels.length - 1) showPanel(current + 1); 
+}
+function prevPanel() { 
+  if (current > 0) showPanel(current - 1); 
+}
 
+// ==============================
 // Days since Dec 30, 2024
+// ==============================
 function daysSinceDate() {
   const start = new Date("2024-12-30");
   const today = new Date();
   return Math.floor((today - start) / (1000 * 60 * 60 * 24));
 }
 
+// ==============================
 // Clock-ticking number animation
+// ==============================
 function animateClockNumber(finalNumber, containerId, suffix = "") {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
@@ -80,7 +94,9 @@ function animateClockNumber(finalNumber, containerId, suffix = "") {
   }
 }
 
+// ==============================
 // Start counters
+// ==============================
 function startCountdown() {
   countdownStarted = true;
   setTimeout(() => { animateClockNumber(daysSinceDate(), "number"); }, 300);
@@ -91,5 +107,49 @@ function startMessageCounter() {
   setTimeout(() => { animateClockNumber(64725, "msg-number", "k+"); }, 300);
 }
 
+// ==============================
 // Click FOR VERNICE → show panel2 + play music
-document.getE
+// ==============================
+document.getElementById("forVernice").addEventListener("click", () => {
+  showPanel(1);
+
+  // Try to play music on user interaction
+  const playPromise = music.play();
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        // playback started successfully
+        playBtn.style.display = "none";
+      })
+      .catch(() => {
+        // autoplay blocked → show fallback button
+        playBtn.style.display = "inline-block";
+      });
+  }
+});
+
+// ==============================
+// Fallback button for blocked autoplay
+// ==============================
+playBtn.addEventListener("click", () => {
+  music.play();
+  playBtn.style.display = "none";
+});
+
+// ==============================
+// Floating hearts
+// ==============================
+const heartsContainer = document.querySelector(".hearts-container");
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.style.left = Math.random() * 100 + "%";
+  heart.style.fontSize = 12 + Math.random() * 16 + "px";
+  heartsContainer.appendChild(heart);
+  heart.textContent = "❤️";
+
+  setTimeout(() => {
+    heart.remove();
+  }, 8000);
+}
+setInterval(createHeart, 500);
