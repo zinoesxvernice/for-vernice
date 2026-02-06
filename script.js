@@ -81,12 +81,17 @@ function startMessageCounter(){
   setTimeout(()=>{ animateClockNumber(64725, "msg-number", "k+"); }, 300);
 }
 
-// ✅ Fixed music handler — panels now work immediately
+// ✅ Fixed music handler — works with GitHub Pages autoplay rules
 document.getElementById("forVernice").addEventListener("click", ()=>{
-  // try to play music (non-blocking)
+  // Temporary mute hack to satisfy browser autoplay restrictions
+  music.muted = true;
   music.currentTime = 0;
-  music.play().catch(()=>{ playBtn.style.display = "inline-block"; });
-  
+  music.play().then(()=>{
+    music.muted = false; // unmute after starting
+  }).catch(()=>{
+    playBtn.style.display = "inline-block";
+  });
+
   // show panel immediately
   showPanel(1);
 });
