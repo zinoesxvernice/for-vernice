@@ -11,37 +11,37 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #151515;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
   color: white;
   overflow: hidden;
   text-align: center;
   position: relative;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><text y="24" font-size="24">🪿</text></svg>') 16 16, auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><text y="24" font-size="24">❤️</text></svg>') 16 16, auto;
   padding: 20px;
 }
 
-/* Gray blur background */
+/* Pink blur background */
 body::before {
   content: "";
   position: absolute;
   width: 600px;
   height: 600px;
-  background: #888;
-  opacity: .12;
+  background: #ff6b81;
+  opacity: .2;
   filter: blur(180px);
   border-radius: 50%;
 }
 
-/* Floating animation */
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
+/* Floating heart animation */
+@keyframes floatHeart {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(15deg); }
+  100% { transform: translateY(0) rotate(0deg); }
 }
 
 .panel {
   position: absolute;
-  animation: float 6s ease-in-out infinite;
+  animation: floatHeart 6s ease-in-out infinite;
   transition: 0.5s ease;
   width: 100%;
   max-width: 900px;
@@ -58,6 +58,8 @@ h1 {
   font-weight: 800;
   letter-spacing: 2px;
   cursor: pointer;
+  color: #ff1a75;
+  text-shadow: 0 0 8px #ff6b81;
 }
 
 .counter-wrap {
@@ -71,7 +73,7 @@ h1 {
 #number, #msg-number {
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 800;
-  color: #ff3b3b;
+  color: #ff1a75;
   display: flex;
 }
 
@@ -82,15 +84,16 @@ h1 {
 
 .subtext {
   margin-top: 15px;
-  opacity: .6;
+  opacity: .8;
   font-size: 1rem;
+  color: #fff5f8;
 }
 
 /* Arrows */
 .arrow {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   width: 48px;
   height: 48px;
   border-radius: 14px;
@@ -108,17 +111,12 @@ h1 {
   pointer-events: none;
 }
 
-.arrow.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
+.arrow.visible { opacity: 1; pointer-events: auto; }
 .arrow-left { left: 15px; }
 .arrow-right { right: 15px; }
-
 .arrow:hover {
   transform: scale(1.1);
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.18);
 }
 
 /* Credit */
@@ -126,8 +124,9 @@ h1 {
   position: fixed;
   bottom: 12px;
   right: 16px;
-  opacity: .5;
+  opacity: .6;
   font-size: .8rem;
+  color: #ff1a75;
 }
 
 @media(max-width:600px){
