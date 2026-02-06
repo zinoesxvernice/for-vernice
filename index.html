@@ -9,62 +9,121 @@
 
 <style>
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Inter',sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
 }
 
 body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    background:linear-gradient(135deg,#0a0a0a,#141414,#1c1c1c,#111111);
-    color:white;
-    overflow:hidden;
-    position:relative;
-    padding:20px;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#0a0a0a,#141414,#1c1c1c,#111111);
+color:white;
+overflow:hidden;
+text-align:center;
+cursor:pointer;
 }
 
-/* subtle modern gradient glow */
-body::before{
-    content:"";
-    position:absolute;
-    width:600px;
-    height:600px;
-    background:radial-gradient(circle,rgba(255,255,255,0.06),transparent 70%);
-    filter:blur(120px);
-    top:-200px;
-    right:-200px;
+/* screens */
+.screen{
+position:absolute;
+transition:all .6s ease;
 }
 
-body::after{
-    content:"";
-    position:absolute;
-    width:600px;
-    height:600px;
-    background:radial-gradient(circle,rgba(255,255,255,0.04),transparent 70%);
-    filter:blur(120px);
-    bottom:-200px;
-    left:-200px;
+.hidden{
+opacity:0;
+transform:scale(.95);
+pointer-events:none;
 }
 
-/* responsive title */
+/* title */
 h1{
-    position:relative;
-    z-index:1;
-    font-size:clamp(2rem,6vw,3.5rem);
-    font-weight:800;
-    letter-spacing:2px;
+font-size:clamp(2rem,6vw,3.5rem);
+font-weight:800;
+letter-spacing:2px;
+}
+
+/* countdown text */
+#counter{
+font-size:clamp(2.5rem,7vw,4rem);
+font-weight:800;
+}
+
+.subtext{
+margin-top:15px;
+opacity:.6;
+font-size:1rem;
+}
+
+/* click animation flash */
+.flash{
+animation:flash .5s ease;
+}
+
+@keyframes flash{
+0%{transform:scale(1)}
+50%{transform:scale(1.08)}
+100%{transform:scale(1)}
 }
 </style>
 </head>
 
 <body>
 
+<div id="home" class="screen">
 <h1>FOR VERNICE 💝</h1>
+</div>
+
+<div id="countdownScreen" class="screen hidden">
+<div id="counter">0 since December 30, 2024</div>
+<div class="subtext">and still counting (hopefully)</div>
+</div>
+
+<script>
+const home = document.getElementById("home");
+const countdownScreen = document.getElementById("countdownScreen");
+const counterText = document.getElementById("counter");
+
+function daysSinceDate(){
+const startDate = new Date("2024-12-30");
+const today = new Date();
+const diff = today - startDate;
+return Math.floor(diff / (1000*60*60*24));
+}
+
+function animateNumbers(finalNumber){
+let current = 0;
+let flashes = 25;
+let interval = setInterval(()=>{
+if(flashes>0){
+current = Math.floor(Math.random()*500);
+counterText.textContent = current+" since December 30, 2024";
+flashes--;
+}else{
+clearInterval(interval);
+counterText.textContent = finalNumber+" since December 30, 2024";
+}
+},60);
+}
+
+document.body.addEventListener("click",()=>{
+if(!home.classList.contains("hidden")){
+
+home.classList.add("hidden");
+countdownScreen.classList.remove("hidden");
+countdownScreen.classList.add("flash");
+
+const finalDays = daysSinceDate();
+setTimeout(()=>{
+animateNumbers(finalDays);
+},300);
+
+}
+});
+</script>
 
 </body>
 </html>
