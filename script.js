@@ -20,23 +20,20 @@ const playBtn = document.getElementById("play-music");
 
 // -------------------- SHOW PANEL --------------------
 function showPanel(i) {
-  if(i < 0 || i >= panels.length) return;
+  if (i < 0 || i >= panels.length) return;
 
   panels[current].classList.add("hidden");
   current = i;
   panels[current].classList.remove("hidden");
 
-  // Show/hide navigation arrows
-  if(current > 0) navLeft.classList.add("visible");
-  else navLeft.classList.remove("visible");
+  // Show/hide navigation
+  navLeft.classList.toggle("visible", current > 0);
+  navRight.classList.toggle("visible", current < panels.length - 1);
 
-  if(current < panels.length - 1) navRight.classList.add("visible");
-  else navRight.classList.remove("visible");
-
-  // Trigger counters or timeline if panel reached
-  if(current === 1 && !countdownStarted) startCountdown();
-  if(current === 2 && !messageCountStarted) startMessageCounter();
-  if(current === 3) startTimeline(); // Panel 4 = timeline
+  // Trigger counters or timeline
+  if (current === 1 && !countdownStarted) startCountdown();
+  if (current === 2 && !messageCountStarted) startMessageCounter();
+  if (current === 3) startTimeline();
 }
 
 // -------------------- NAVIGATION --------------------
@@ -75,13 +72,13 @@ function animateClockNumber(finalNumber, containerId, suffix="") {
     }, 800 + i * 400);
   });
 
-  if(suffix) {
-    setTimeout(() => {
+  if(suffix){
+    setTimeout(()=>{
       const suffixSpan = document.createElement("span");
       suffixSpan.textContent = suffix;
-      suffixSpan.style.marginLeft = "4px";
-      suffixSpan.style.color = "#ff3b3b";
-      suffixSpan.style.fontWeight = "800";
+      suffixSpan.style.marginLeft="4px";
+      suffixSpan.style.color="#ff3b3b";
+      suffixSpan.style.fontWeight="800";
       container.appendChild(suffixSpan);
     }, 800 + finalNumber.toString().length * 400);
   }
@@ -100,7 +97,7 @@ function startMessageCounter() {
 // -------------------- CLICK FOR VERNICE --------------------
 document.getElementById("forVernice").addEventListener("click", () => {
   showPanel(1);
-  music.play().catch(() => { playBtn.style.display = "inline-block"; });
+  music.play().catch(()=>{ playBtn.style.display = "inline-block"; });
 });
 
 // Fallback play button
@@ -114,12 +111,11 @@ const heartsContainer = document.querySelector(".hearts-container");
 function createHeart() {
   const heart = document.createElement("div");
   heart.classList.add("heart");
-  heart.style.left = Math.random() * 100 + "%";
-  heart.style.fontSize = 12 + Math.random() * 16 + "px";
+  heart.style.left = Math.random()*100+"%";
+  heart.style.fontSize = (12 + Math.random()*16)+"px";
   heart.textContent = "❤️";
   heartsContainer.appendChild(heart);
-
-  setTimeout(() => heart.remove(), 8000);
+  setTimeout(()=>heart.remove(), 8000);
 }
 setInterval(createHeart, 500);
 
@@ -138,47 +134,44 @@ function startTimeline() {
 
   if (!line) return;
 
-  // Reset line and branches
   line.style.width = "0";
-  container.querySelectorAll(".timeline-branch, .timeline-point, .timeline-label").forEach(el => el.remove());
+  container.querySelectorAll(".timeline-branch, .timeline-point, .timeline-label").forEach(el=>el.remove());
 
-  // Animate main line
-  setTimeout(() => { line.style.width = "100%"; }, 300);
+  setTimeout(()=>line.style.width="100%", 300);
 
-  // Add branches, points, labels
-  setTimeout(() => {
-    timelineEvents.forEach((event, i) => {
-      const percent = (i / (timelineEvents.length - 1)) * 100;
+  setTimeout(()=>{
+    timelineEvents.forEach((event,i)=>{
+      const percent = (i / (timelineEvents.length-1))*100;
 
       // Branch
       const branch = document.createElement("div");
-      branch.className = "timeline-branch";
-      branch.style.left = percent + "%";
-      branch.style.top = "50%";
+      branch.className="timeline-branch";
+      branch.style.left=percent+"%";
+      branch.style.top="50%";
       container.appendChild(branch);
-      setTimeout(() => branch.style.height = "50px", i * 300);
+      setTimeout(()=>branch.style.height="50px", i*300);
 
       // Point
-      const point = document.createElement("div");
-      point.className = "timeline-point";
-      point.style.left = percent + "%";
+      const point=document.createElement("div");
+      point.className="timeline-point";
+      point.style.left=percent+"%";
       container.appendChild(point);
-      setTimeout(() => {
-        point.style.opacity = "1";
-        point.style.transform = "translate(-50%, -150%)";
-      }, i * 400 + 800);
+      setTimeout(()=>{
+        point.style.opacity="1";
+        point.style.transform="translate(-50%, -150%)";
+      }, i*400+800);
 
       // Label
-      const label = document.createElement("div");
-      label.className = "timeline-label";
-      label.style.left = percent + "%";
-      label.style.top = "calc(50% - 60px)";
-      label.textContent = `${event.date} – ${event.label}`;
+      const label=document.createElement("div");
+      label.className="timeline-label";
+      label.style.left=percent+"%";
+      label.style.top="calc(50% - 60px)";
+      label.textContent=`${event.date} – ${event.label}`;
       container.appendChild(label);
-      setTimeout(() => {
-        label.style.opacity = "1";
-        label.style.transform = "translateY(0)";
-      }, i * 500 + 1000);
+      setTimeout(()=>{
+        label.style.opacity="1";
+        label.style.transform="translateY(0)";
+      }, i*500+1000);
     });
-  }, 2000);
+  },2000);
 }
