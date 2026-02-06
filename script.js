@@ -4,7 +4,7 @@ const navLeft = document.querySelector(".arrow-left");
 const navRight = document.querySelector(".arrow-right");
 let countdownStarted = false;
 let messageCountStarted = false;
-const music = document.getElementById("bg-music");
+const music = document.getElementById("music");
 const playBtn = document.getElementById("play-music");
 
 // Show panel function
