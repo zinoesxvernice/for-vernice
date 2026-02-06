@@ -1,56 +1,60 @@
-// Panels
+// -------------------- PANELS --------------------
 const panels = [
   document.getElementById("panel1"),
   document.getElementById("panel2"),
-  document.getElementById("panel3")
+  document.getElementById("panel3"),
+  document.getElementById("panel4")
 ];
+
 let current = 0;
 const navLeft = document.querySelector(".arrow-left");
 const navRight = document.querySelector(".arrow-right");
 
-// Counters
+// -------------------- COUNTERS --------------------
 let countdownStarted = false;
 let messageCountStarted = false;
 
-// Music
+// -------------------- MUSIC --------------------
 const music = document.getElementById("music");
 const playBtn = document.getElementById("play-music");
 
-// Show panel function
+// -------------------- SHOW PANEL --------------------
 function showPanel(i) {
   panels[current].classList.add("hidden");
   current = i;
   panels[current].classList.remove("hidden");
 
+  // Navigation arrow visibility
   if (current >= 1) {
     navLeft.classList.add("visible");
     navRight.classList.add("visible");
-
-    if (current === 1 && !countdownStarted) startCountdown();
-    if (current === 2 && !messageCountStarted) startMessageCounter();
   } else {
     navLeft.classList.remove("visible");
     navRight.classList.remove("visible");
   }
+
+  // Start counters or timeline if panel reached
+  if (current === 1 && !countdownStarted) startCountdown();
+  if (current === 2 && !messageCountStarted) startMessageCounter();
+  if (current === 3) startTimeline(); // panel4 = timeline
 }
 
-// Navigation
-function nextPanel() { if (current < panels.length - 1) showPanel(current + 1); }
-function prevPanel() { if (current > 0) showPanel(current - 1); }
+// -------------------- NAVIGATION --------------------
+function nextPanel() { if(current < panels.length - 1) showPanel(current + 1); }
+function prevPanel() { if(current > 0) showPanel(current - 1); }
 
-// Days since Dec 30, 2024
+// -------------------- DAYS COUNTER --------------------
 function daysSinceDate() {
   const start = new Date("2024-12-30");
   const today = new Date();
   return Math.floor((today - start) / (1000 * 60 * 60 * 24));
 }
 
-// Clock-ticking number animation
-function animateClockNumber(finalNumber, containerId, suffix = "") {
+function animateClockNumber(finalNumber, containerId, suffix="") {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
 
-  [...finalNumber.toString()].forEach((num, i) => {
+  [...finalNumber.toString()].forEach((num,i) => {
     const span = document.createElement("span");
     span.className = "digit";
     span.textContent = "0";
@@ -68,7 +72,7 @@ function animateClockNumber(finalNumber, containerId, suffix = "") {
     }, 800 + i * 400);
   });
 
-  if (suffix) {
+  if(suffix){
     setTimeout(() => {
       const suffixSpan = document.createElement("span");
       suffixSpan.textContent = suffix;
@@ -80,18 +84,17 @@ function animateClockNumber(finalNumber, containerId, suffix = "") {
   }
 }
 
-// Start counters
-function startCountdown() {
+function startCountdown(){
   countdownStarted = true;
   setTimeout(() => { animateClockNumber(daysSinceDate(), "number"); }, 300);
 }
 
-function startMessageCounter() {
+function startMessageCounter(){
   messageCountStarted = true;
   setTimeout(() => { animateClockNumber(64725, "msg-number", "k+"); }, 300);
 }
 
-// Click FOR VERNICE → show panel2 + play music
+// -------------------- CLICK FOR VERNICE --------------------
 document.getElementById("forVernice").addEventListener("click", () => {
   showPanel(1);
   music.play().catch(() => { playBtn.style.display = "inline-block"; });
@@ -103,39 +106,84 @@ playBtn.addEventListener("click", () => {
   playBtn.style.display = "none";
 });
 
-// Floating hearts (front layer)
+// -------------------- FLOATING HEARTS --------------------
 const heartsContainer = document.querySelector(".hearts-container");
 function createHeart() {
   const heart = document.createElement("div");
   heart.classList.add("heart");
   heart.style.left = Math.random() * 100 + "%";
   heart.style.fontSize = 12 + Math.random() * 16 + "px";
-  heartsContainer.appendChild(heart);
   heart.textContent = "❤️";
+  heartsContainer.appendChild(heart);
 
   setTimeout(() => heart.remove(), 8000);
 }
 setInterval(createHeart, 500);
 
-// Background hearts (behind panels)
-function createBackgroundHeart() {
-  const heart = document.createElement("div");
-  heart.classList.add("bg-heart");
-  heart.style.left = Math.random() * 100 + "%";
-  heart.style.fontSize = 24 + Math.random() * 24 + "px";
-  heart.style.opacity = 0.2 + Math.random() * 0.3; // soft background
-  heartsContainer.appendChild(heart);
-  heart.textContent = "❤️";
+// -------------------- LOVE TIMELINE --------------------
+const timelineEvents = [
+  { date: "Dec 30, 2024", label: "First met" },
+  { date: "Jan 15, 2025", label: "First message" },
+  { date: "Feb 14, 2025", label: "First Valentine’s" },
+  { date: "Mar 01, 2025", label: "First date" },
+  { date: "Apr 10, 2025", label: "Special memory" }
+];
 
-  heart.animate([
-    { transform: `translateY(0px)`, opacity: heart.style.opacity },
-    { transform: `translateY(-800px)`, opacity: 0 }
-  ], {
-    duration: 15000 + Math.random() * 10000,
-    iterations: 1,
-    easing: 'linear'
-  });
+function startTimeline() {
+  const container = document.querySelector("#panel4 .timeline-container");
+  const line = container.querySelector(".timeline-line");
 
-  setTimeout(() => heart.remove(), 15000 + Math.random() * 10000);
+  if (!line) return;
+
+  // Reset in case user navigates back and forth
+  line.style.width = "0";
+  container.querySelectorAll(".timeline-branch, .timeline-point, .timeline-label")
+           .forEach(el => el.remove());
+
+  // Animate main line
+  setTimeout(() => { line.style.width = "100%"; }, 300);
+
+  // Add branches, points, labels
+  setTimeout(() => {
+    timelineEvents.forEach((event, i) => {
+      const percent = (i / (timelineEvents.length - 1)) * 100;
+
+      // Branch
+      const branch = document.createElement("div");
+      branch.className = "timeline-branch";
+      branch.style.left = percent + "%";
+      branch.style.top = "50%";
+      container.appendChild(branch);
+      setTimeout(() => { branch.style.height = "50px"; }, i * 300);
+
+      // Point
+      const point = document.createElement("div");
+      point.className = "timeline-point";
+      point.style.left = percent + "%";
+      container.appendChild(point);
+      setTimeout(() => {
+        point.style.opacity = "1";
+        point.style.transform = "translate(-50%, -150%)";
+      }, i * 400 + 800);
+
+      // Label
+      const label = document.createElement("div");
+      label.className = "timeline-label";
+      label.style.left = percent + "%";
+      label.style.top = "calc(50% - 60px)";
+      label.textContent = `${event.date} – ${event.label}`;
+      container.appendChild(label);
+      setTimeout(() => {
+        label.style.opacity = "1";
+        label.style.transform = "translateY(0)";
+      }, i * 500 + 1000);
+    });
+  }, 2000);
 }
-setInterval(createBackgroundHeart, 1000);
+
+// -------------------- ARROW NAVIGATION --------------------
+navRight.addEventListener("click", () => {
+  if(current === 2) showPanel(3); // panel4
+  else nextPanel();
+});
+
