@@ -83,3 +83,16 @@ function startMessageCounter(){
 document.getElementById("forVernice").addEventListener("click", ()=>{
   showPanel(1);
 });
+
+const music = document.getElementById("bg-music");
+
+document.getElementById("forVernice").addEventListener("click", ()=>{
+  showPanel(1);
+  // Play music on first click
+  if(music.paused){
+    music.play().catch(err => {
+      console.log("Autoplay prevented:", err);
+    });
+  }
+});
+
