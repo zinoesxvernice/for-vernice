@@ -1,6 +1,4 @@
-/* ==============================
-   Reset & Fonts
-============================== */
+/* Reset & font */
 * {
   margin: 0;
   padding: 0;
@@ -22,9 +20,7 @@ body {
   padding: 20px;
 }
 
-/* ==============================
-   Soft Blurred Background Circles
-============================== */
+/* Soft blurred background circles */
 body::before,
 body::after {
   content: "";
@@ -51,9 +47,7 @@ body::after {
   right: -100px;
 }
 
-/* ==============================
-   Panel Animation
-============================== */
+/* Panel floating */
 @keyframes floatHeartPanel {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-15px); }
@@ -75,18 +69,15 @@ body::after {
   transform: scale(.95);
 }
 
-/* ==============================
-   Headers & Counters
-============================== */
 h1 {
   font-size: clamp(2rem, 6vw, 3.5rem);
   font-weight: 800;
   letter-spacing: 2px;
-  cursor: pointer;
   color: #ff1a75;
   text-shadow: 0 0 12px #ff6b81;
 }
 
+/* Counter */
 .counter-wrap {
   display: flex;
   justify-content: center;
@@ -114,9 +105,7 @@ h1 {
   color: #fff0f5;
 }
 
-/* ==============================
-   Arrows
-============================== */
+/* Arrows */
 .arrow {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
@@ -138,22 +127,15 @@ h1 {
   pointer-events: none;
 }
 
-.arrow.visible { 
-  opacity: 1; 
-  pointer-events: auto; 
-}
-
+.arrow.visible { opacity: 1; pointer-events: auto; }
 .arrow-left { left: 15px; }
 .arrow-right { right: 15px; }
-
 .arrow:hover {
   transform: scale(1.1);
   background: rgba(255, 255, 255, 0.25);
 }
 
-/* ==============================
-   Credit
-============================== */
+/* Credit */
 .credit {
   position: fixed;
   bottom: 12px;
@@ -163,9 +145,7 @@ h1 {
   color: #ff1a75;
 }
 
-/* ==============================
-   Floating Hearts
-============================== */
+/* Floating hearts */
 .hearts-container {
   position: absolute;
   width: 100%;
@@ -190,9 +170,7 @@ h1 {
   100% { transform: translateY(-600px) rotate(360deg); opacity:0; }
 }
 
-/* ==============================
-   Music Fallback Button
-============================== */
+/* Fallback button */
 #play-music {
   display: none;
   position: fixed;
@@ -204,34 +182,25 @@ h1 {
   border: none;
   background: #ff3b3b;
   color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   cursor: pointer;
   z-index: 9999;
-  box-shadow: 0 0 8px rgba(255,59,59,0.6);
-  animation: pulse 1.5s infinite;
+  transition: all 0.3s ease;
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 8px rgba(255, 59, 59, 0.6);
-  }
-  50% {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(255, 59, 59, 0.9);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 8px rgba(255, 59, 59, 0.6);
-  }
+/* Hover glow effect for every span inside text */
+.panel span, .counter-wrap span {
+  display: inline-block;
+  transition: all 0.3s ease;
 }
 
-/* ==============================
-   Responsive
-============================== */
+.panel span:hover, .counter-wrap span:hover {
+  color: #ff1a75;
+  text-shadow: 0 0 8px #ff6b81, 0 0 12px #ff3b3b, 0 0 16px #ff1a75;
+  transform: translateY(-6px) scale(1.1);
+  cursor: default;
+}
+
 @media(max-width:600px){
-  .arrow { 
-    width: 42px; 
-    height: 42px; 
-    font-size: 18px; 
-  }
+  .arrow { width: 42px; height: 42px; font-size: 18px; }
 }
