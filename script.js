@@ -16,7 +16,7 @@ let messageCountStarted = false;
 const music = document.getElementById("music");
 const playBtn = document.getElementById("play-music");
 
-// Wrap every character in spans for glow effect
+// Wrap every character in spans for hover & bubbly effects
 function wrapTextInSpans(selector) {
   document.querySelectorAll(selector).forEach(el => {
     el.innerHTML = el.textContent
@@ -26,7 +26,7 @@ function wrapTextInSpans(selector) {
   });
 }
 
-// Apply to all panels, headers, counters
+// Apply to headers, subtexts, counters
 wrapTextInSpans('.panel h1, .panel .subtext, .counter-wrap div');
 
 // Show panel function
@@ -104,10 +104,25 @@ function startMessageCounter() {
   setTimeout(() => { animateClockNumber(64725, "msg-number", "k+"); }, 300);
 }
 
-// Click FOR VERNICE → show panel2 + play music
+// Bubbly animation trigger
+function triggerBubblyAnimation(selector) {
+  const letters = document.querySelectorAll(selector);
+  letters.forEach((span, i) => {
+    setTimeout(() => {
+      span.classList.add("bubbly");
+    }, i * 50);
+
+    span.addEventListener("animationend", () => {
+      span.classList.remove("bubbly");
+    }, { once: true });
+  });
+}
+
+// Click FOR VERNICE → show panel2 + play music + bubbly text
 document.getElementById("forVernice").addEventListener("click", () => {
   showPanel(1);
   music.play().catch(() => { playBtn.style.display = "inline-block"; });
+  triggerBubblyAnimation("#forVernice span");
 });
 
 // Fallback play button
@@ -128,6 +143,6 @@ function createHeart() {
 
   setTimeout(() => {
     heart.remove();
-  }, 8000); // remove after animation
+  }, 8000);
 }
 setInterval(createHeart, 500);
