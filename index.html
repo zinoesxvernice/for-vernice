@@ -8,12 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Inter',sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 
 body{
 height:100vh;
@@ -24,40 +19,42 @@ background:#151515;
 color:white;
 overflow:hidden;
 text-align:center;
-cursor:pointer;
-cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><text y="24" font-size="24">🪿</text></svg>') 16 16, auto;
 position:relative;
+cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32"><text y="24" font-size="24">🪿</text></svg>') 16 16, auto;
+padding:20px;
 }
 
-/* clean gray blur background */
+/* gray blur bg */
 body::before{
 content:"";
 position:absolute;
 width:600px;
 height:600px;
-background:#777;
-opacity:.15;
+background:#888;
+opacity:.12;
 filter:blur(180px);
 border-radius:50%;
 }
 
-/* floating animation */
+/* floating */
 @keyframes float{
-0%{transform:translateY(0px)}
+0%{transform:translateY(0)}
 50%{transform:translateY(-10px)}
-100%{transform:translateY(0px)}
+100%{transform:translateY(0)}
 }
 
-.screen{
+.panel{
 position:absolute;
 animation:float 6s ease-in-out infinite;
-transition:all .6s ease;
+transition:.5s ease;
+width:100%;
+max-width:900px;
 }
 
 .hidden{
 opacity:0;
-transform:scale(.95);
 pointer-events:none;
+transform:scale(.95);
 }
 
 h1{
@@ -66,7 +63,6 @@ font-weight:800;
 letter-spacing:2px;
 }
 
-/* countdown layout */
 .counter-wrap{
 display:flex;
 justify-content:center;
@@ -79,7 +75,6 @@ flex-wrap:wrap;
 font-size:clamp(3rem,8vw,5rem);
 font-weight:800;
 color:#ff3b3b;
-letter-spacing:2px;
 display:flex;
 }
 
@@ -93,46 +88,108 @@ margin-top:15px;
 opacity:.6;
 font-size:1rem;
 }
+
+/* arrows */
+.nav{
+position:fixed;
+right:15px;
+top:50%;
+transform:translateY(-50%);
+display:flex;
+flex-direction:column;
+gap:12px;
+z-index:10;
+}
+
+.arrow{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.1);
+width:48px;
+height:48px;
+border-radius:14px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:22px;
+cursor:pointer;
+transition:.2s;
+}
+
+.arrow:hover{
+transform:scale(1.1);
+background:rgba(255,255,255,0.12);
+}
+
+/* credit */
+.credit{
+position:fixed;
+bottom:12px;
+right:16px;
+opacity:.5;
+font-size:.8rem;
+}
+
+@media(max-width:600px){
+.arrow{width:42px;height:42px;font-size:18px;}
+}
 </style>
 </head>
 
 <body>
 
-<div id="home" class="screen">
+<div id="panel1" class="panel">
 <h1>FOR VERNICE 💝</h1>
 </div>
 
-<div id="countdownScreen" class="screen hidden">
+<div id="panel2" class="panel hidden">
 <div class="counter-wrap">
 <div id="number"></div>
-<div> days since December 30, 2024</div>
+<div>since December 30, 2024</div>
 </div>
 <div class="subtext">and still counting (hopefully)</div>
 </div>
 
-<script>
-const home = document.getElementById("home");
-const countdownScreen = document.getElementById("countdownScreen");
-const numberContainer = document.getElementById("number");
+<div class="nav">
+<div class="arrow" onclick="nextPanel()">></div>
+<div class="arrow" onclick="prevPanel()"><</div>
+</div>
 
-function daysSinceDate(){
-const startDate = new Date("2024-12-30");
-const today = new Date();
-const diff = today - startDate;
-return Math.floor(diff/(1000*60*60*24));
+<div class="credit">made by zino</div>
+
+<script>
+const panels=[document.getElementById("panel1"),document.getElementById("panel2")];
+let current=0;
+
+function showPanel(i){
+panels[current].classList.add("hidden");
+current=i;
+panels[current].classList.remove("hidden");
+if(current===1){startCountdown();}
 }
 
-/* clock ticking animation */
+function nextPanel(){
+if(current<panels.length-1)showPanel(current+1);
+}
+
+function prevPanel(){
+if(current>0)showPanel(current-1);
+}
+
+function daysSinceDate(){
+const start=new Date("2024-12-30");
+const today=new Date();
+return Math.floor((today-start)/(1000*60*60*24));
+}
+
 function animateClockNumber(finalNumber){
-
-const finalStr = finalNumber.toString();
-numberContainer.innerHTML="";
-
-[...finalStr].forEach((num,i)=>{
+const container=document.getElementById("number");
+container.innerHTML="";
+[...finalNumber.toString()].forEach((num,i)=>{
 const span=document.createElement("span");
 span.className="digit";
 span.textContent="0";
-numberContainer.appendChild(span);
+container.appendChild(span);
 
 let current=0;
 let interval=setInterval(()=>{
@@ -143,23 +200,17 @@ current=(current+1)%10;
 setTimeout(()=>{
 clearInterval(interval);
 span.textContent=num;
-},800+(i*400)); // digits stop one by one
+},800+(i*400));
 });
-
 }
 
-document.body.addEventListener("click",()=>{
-if(!home.classList.contains("hidden")){
-home.classList.add("hidden");
-countdownScreen.classList.remove("hidden");
-
-const finalDays = daysSinceDate();
-
+function startCountdown(){
+if(window.countStarted)return;
+window.countStarted=true;
 setTimeout(()=>{
-animateClockNumber(finalDays);
+animateClockNumber(daysSinceDate());
 },300);
 }
-});
 </script>
 
 </body>
