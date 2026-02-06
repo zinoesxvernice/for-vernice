@@ -20,41 +20,44 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:#0a0a0a;
+    text-align:center;
+    background:linear-gradient(135deg,#0a0a0a,#141414,#1c1c1c,#111111);
+    color:white;
     overflow:hidden;
     position:relative;
+    padding:20px;
 }
 
-body::before,
+/* subtle modern gradient glow */
+body::before{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    background:radial-gradient(circle,rgba(255,255,255,0.06),transparent 70%);
+    filter:blur(120px);
+    top:-200px;
+    right:-200px;
+}
+
 body::after{
     content:"";
     position:absolute;
-    width:500px;
-    height:500px;
-    border-radius:50%;
-    filter:blur(160px);
-    opacity:0.35;
+    width:600px;
+    height:600px;
+    background:radial-gradient(circle,rgba(255,255,255,0.04),transparent 70%);
+    filter:blur(120px);
+    bottom:-200px;
+    left:-200px;
 }
 
-body::before{
-    background:#ff4da6;
-    top:-150px;
-    left:-150px;
-}
-
-body::after{
-    background:#4d79ff;
-    bottom:-150px;
-    right:-150px;
-}
-
+/* responsive title */
 h1{
     position:relative;
     z-index:1;
-    font-size:3.5rem;
+    font-size:clamp(2rem,6vw,3.5rem);
     font-weight:800;
     letter-spacing:2px;
-    color:white;
 }
 </style>
 </head>
