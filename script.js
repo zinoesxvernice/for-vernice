@@ -81,14 +81,13 @@ function startMessageCounter(){
   setTimeout(()=>{ animateClockNumber(64725, "msg-number", "k+"); }, 300);
 }
 
-// ✅ FIXED: play music FIRST (only change made)
-document.getElementById("forVernice").addEventListener("click", async ()=>{
-  try {
-    music.currentTime = 0;
-    await music.play();
-  } catch(e) {
-    playBtn.style.display = "inline-block";
-  }
+// ✅ Fixed music handler — panels now work immediately
+document.getElementById("forVernice").addEventListener("click", ()=>{
+  // try to play music (non-blocking)
+  music.currentTime = 0;
+  music.play().catch(()=>{ playBtn.style.display = "inline-block"; });
+  
+  // show panel immediately
   showPanel(1);
 });
 
