@@ -1,4 +1,4 @@
-/* General reset */
+/* Reset & font */
 * {
   margin: 0;
   padding: 0;
@@ -68,7 +68,7 @@ h1 {
   flex-wrap: wrap;
 }
 
-#number, .msg-number {
+#number, #msg-number {
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 800;
   color: #ff3b3b;
@@ -86,7 +86,7 @@ h1 {
   font-size: 1rem;
 }
 
-/* Navigation arrows */
+/* Arrows */
 .arrow {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
@@ -105,7 +105,7 @@ h1 {
   transform: translateY(-50%);
   z-index: 10;
   opacity: 0;
-  pointer-events: none; /* initially not clickable */
+  pointer-events: none;
 }
 
 .arrow.visible {
@@ -118,7 +118,7 @@ h1 {
 
 .arrow:hover {
   transform: scale(1.1);
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* Credit */
