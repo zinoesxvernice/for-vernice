@@ -1,3 +1,4 @@
+// Panels
 const panels = [
   document.getElementById("panel1"),
   document.getElementById("panel2"),
@@ -6,22 +7,27 @@ const panels = [
 let current = 0;
 const navLeft = document.querySelector(".arrow-left");
 const navRight = document.querySelector(".arrow-right");
+
+// Counters
 let countdownStarted = false;
 let messageCountStarted = false;
+
+// Music
 const music = document.getElementById("music");
 const playBtn = document.getElementById("play-music");
 
 // Show panel function
-function showPanel(i){
+function showPanel(i) {
   panels[current].classList.add("hidden");
   current = i;
   panels[current].classList.remove("hidden");
 
-  if(current >= 1){
+  if (current >= 1) {
     navLeft.classList.add("visible");
     navRight.classList.add("visible");
-    if(current===1 && !countdownStarted) startCountdown();
-    if(current===2 && !messageCountStarted) startMessageCounter();
+
+    if (current === 1 && !countdownStarted) startCountdown();
+    if (current === 2 && !messageCountStarted) startMessageCounter();
   } else {
     navLeft.classList.remove("visible");
     navRight.classList.remove("visible");
@@ -29,41 +35,41 @@ function showPanel(i){
 }
 
 // Navigation
-function nextPanel(){ if(current < panels.length - 1) showPanel(current + 1); }
-function prevPanel(){ if(current > 0) showPanel(current - 1); }
+function nextPanel() { if (current < panels.length - 1) showPanel(current + 1); }
+function prevPanel() { if (current > 0) showPanel(current - 1); }
 
 // Days since Dec 30, 2024
-function daysSinceDate(){
+function daysSinceDate() {
   const start = new Date("2024-12-30");
   const today = new Date();
-  return Math.floor((today - start) / (1000*60*60*24));
+  return Math.floor((today - start) / (1000 * 60 * 60 * 24));
 }
 
 // Clock-ticking number animation
-function animateClockNumber(finalNumber, containerId, suffix=""){
+function animateClockNumber(finalNumber, containerId, suffix = "") {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
 
-  [...finalNumber.toString()].forEach((num,i)=>{
+  [...finalNumber.toString()].forEach((num, i) => {
     const span = document.createElement("span");
     span.className = "digit";
     span.textContent = "0";
     container.appendChild(span);
 
     let currentDigit = 0;
-    const interval = setInterval(()=>{
+    const interval = setInterval(() => {
       span.textContent = currentDigit;
       currentDigit = (currentDigit + 1) % 10;
     }, 50);
 
-    setTimeout(()=>{
+    setTimeout(() => {
       clearInterval(interval);
       span.textContent = num;
     }, 800 + i * 400);
   });
 
-  if(suffix){
-    setTimeout(()=>{
+  if (suffix) {
+    setTimeout(() => {
       const suffixSpan = document.createElement("span");
       suffixSpan.textContent = suffix;
       suffixSpan.style.marginLeft = "4px";
@@ -75,48 +81,15 @@ function animateClockNumber(finalNumber, containerId, suffix=""){
 }
 
 // Start counters
-function startCountdown(){
+function startCountdown() {
   countdownStarted = true;
-  setTimeout(()=>{ animateClockNumber(daysSinceDate(), "number"); }, 300);
+  setTimeout(() => { animateClockNumber(daysSinceDate(), "number"); }, 300);
 }
 
-function startMessageCounter(){
+function startMessageCounter() {
   messageCountStarted = true;
-  setTimeout(()=>{ animateClockNumber(64725, "msg-number", "k+"); }, 300);
+  setTimeout(() => { animateClockNumber(64725, "msg-number", "k+"); }, 300);
 }
 
-// Click FOR VERNICE → panel2 + play music immediately
-document.getElementById("forVernice").addEventListener("click", ()=>{
-  showPanel(1);
-
-  // Autoplay-safe play
-  music.muted = true;        // start muted to satisfy autoplay policy
-  music.currentTime = 0;
-  music.play().then(()=>{
-    music.muted = false;     // unmute once playback starts
-  }).catch(()=>{
-    playBtn.style.display = "inline-block"; // fallback button if blocked
-  });
-});
-
-// Fallback play button
-playBtn.addEventListener("click", ()=>{
-  music.play();
-  playBtn.style.display = "none";
-});
-
-// Generate floating hearts
-const heartsContainer = document.querySelector(".hearts-container");
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.style.left = Math.random() * 100 + "%";
-  heart.style.fontSize = 12 + Math.random() * 16 + "px";
-  heartsContainer.appendChild(heart);
-  heart.textContent = "❤️";
-
-  setTimeout(() => {
-    heart.remove();
-  }, 8000); // remove after animation
-}
-setInterval(createHeart, 500);
+// Click FOR VERNICE → show panel2 + play music
+document.getE
